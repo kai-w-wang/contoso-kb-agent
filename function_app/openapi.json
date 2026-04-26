@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Maybank KB Agent API",
+    "description": "API for querying the Maybank Knowledge Base via Azure AI Foundry agent. Returns grounded answers with citations from KB articles.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "${{FUNCTION_APP_URL}}",
+      "description": "Azure Function App endpoint"
+    }
+  ],
+  "paths": {
+    "/api/ask": {
+      "post": {
+        "operationId": "askKnowledgeBase",
+        "summary": "Ask a question about Maybank products and services",
+        "description": "Sends a question to the Maybank Knowledge Base agent and returns a grounded answer with citations. Use this for questions about account opening, credit cards, loans, internet banking, and foreign exchange.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["question"],
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "The user's question about Maybank products or services",
+                    "example": "How do I open a savings account at Maybank?"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with grounded answer and citations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "answer": {
+                      "type": "string",
+                      "description": "The grounded answer from the knowledge base"
+                    },
+                    "citations": {
+                      "type": "array",
+                      "description": "Source articles referenced in the answer",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "Title of the source article"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "URL of the source article"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or empty question"
+          },
+          "502": {
+            "description": "Foundry agent call failed"
+          }
+        }
+      }
+    }
+  }
+}

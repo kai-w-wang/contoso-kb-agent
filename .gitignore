@@ -1,0 +1,8 @@
+.azure
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+*.zip
+local.settings.json
+.vscode/

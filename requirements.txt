@@ -1,0 +1,7 @@
+azure-ai-projects>=2.1.0
+azure-ai-agents>=1.2.0b5
+azure-identity>=1.21.0
+azure-search-documents>=11.6.0b8
+openai>=1.60.0
+python-dotenv>=1.0.1
+pytest>=8.0.0

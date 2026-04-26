@@ -1,0 +1,20 @@
+defaultEnvironment: dev
+environments:
+  dev:
+    projectEndpoint: https://ai-account-worwjaulcylli.services.ai.azure.com/api/projects/ai-project-maybank-kb-agent
+    agentName: maybank-kb-agent
+    observability:
+      applicationInsightsResourceId: /subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-maybank-kb-agent/providers/Microsoft.Insights/components/appi-worwjaulcylli
+    testCases:
+      - id: smoke-kb-search
+        priority: P0
+        dataset: maybank-kb-agent-eval-seed
+        datasetVersion: v1
+        datasetFile: .foundry/datasets/maybank-kb-agent-eval-seed-v1.jsonl
+        evaluators:
+          - name: groundedness
+            threshold: 4
+          - name: coherence
+            threshold: 4
+          - name: relevance
+            threshold: 4

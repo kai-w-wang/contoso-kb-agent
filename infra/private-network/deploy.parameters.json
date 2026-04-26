@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "aiServices": {
+      "value": "mbkbpvt"
+    },
+    "modelName": {
+      "value": "gpt-4o-mini"
+    },
+    "modelFormat": {
+      "value": "OpenAI"
+    },
+    "modelVersion": {
+      "value": "2024-07-18"
+    },
+    "modelSkuName": {
+      "value": "GlobalStandard"
+    },
+    "modelCapacity": {
+      "value": 10
+    },
+    "deploymentTimestamp": {
+      "value": "20260426"
+    },
+    "firstProjectName": {
+      "value": "maybank-kb-project"
+    },
+    "projectDescription": {
+      "value": "Maybank KB Agent with private networking"
+    },
+    "displayName": {
+      "value": "Maybank KB Private Agent"
+    },
+    "existingVnetResourceId": {
+      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-maybank-kb-agent/providers/Microsoft.Network/virtualNetworks/vnet-maybank-kb"
+    },
+    "vnetName": {
+      "value": "vnet-maybank-kb"
+    },
+    "agentSubnetName": {
+      "value": "subnet-agent-v2"
+    },
+    "agentSubnetPrefix": {
+      "value": "10.0.5.0/24"
+    },
+    "peSubnetName": {
+      "value": "subnet-private-ep"
+    },
+    "peSubnetPrefix": {
+      "value": "10.0.3.0/24"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "aiSearchResourceId": {
+      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-maybank-kb-agent/providers/Microsoft.Search/searchServices/maybank-kb-search"
+    },
+    "existingDnsZones": {
+      "value": {
+        "privatelink.services.ai.azure.com": "",
+        "privatelink.openai.azure.com": "",
+        "privatelink.cognitiveservices.azure.com": "rg-maybank-kb-agent",
+        "privatelink.search.windows.net": "rg-maybank-kb-agent",
+        "privatelink.blob.core.windows.net": "",
+        "privatelink.documents.azure.com": ""
+      }
+    }
+  }
+}

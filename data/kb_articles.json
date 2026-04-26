@@ -1,0 +1,37 @@
+[
+  {
+    "id": "kb-001",
+    "title": "Account Opening Process",
+    "category": "Banking",
+    "source_url": "https://kb.maybank.com/account-opening",
+    "content": "To open a new Maybank savings account, visit any branch with your NRIC or passport, proof of address dated within 3 months, and a minimum initial deposit of RM250. The process takes approximately 30 minutes. You can also apply online through the Maybank2u portal. Online applications require identity verification via video call and e-KYC. Once approved, your debit card will be mailed within 5-7 business days."
+  },
+  {
+    "id": "kb-002",
+    "title": "Internet Banking Registration",
+    "category": "Digital Banking",
+    "source_url": "https://kb.maybank.com/internet-banking",
+    "content": "Register for Maybank2u internet banking by visiting maybank2u.com.my and clicking Register. You will need your account number, ATM card number, and PIN. Set up your username and password following the security requirements: minimum 8 characters, at least one uppercase letter, one number, and one special character. Enable two-factor authentication using the MAE app for enhanced security. If you forget your credentials, visit any branch with your IC for a reset."
+  },
+  {
+    "id": "kb-003",
+    "title": "Credit Card Application Requirements",
+    "category": "Credit Cards",
+    "source_url": "https://kb.maybank.com/credit-card-apply",
+    "content": "To apply for a Maybank credit card, you must be at least 21 years old with a minimum annual income of RM24,000 for basic cards or RM60,000 for premium cards. Required documents include IC copy, latest 3 months salary slips, latest EA form or tax return, and proof of residence. Application can be done online, at branches, or through authorized agents. Processing takes 7-14 working days. Check application status via Maybank2u or call 1-300-88-6688."
+  },
+  {
+    "id": "kb-004",
+    "title": "Loan Payment and Restructuring",
+    "category": "Loans",
+    "source_url": "https://kb.maybank.com/loan-payment",
+    "content": "Monthly loan payments are automatically deducted from your designated Maybank account. To change your payment account, visit any branch or call customer service. For financial difficulties, Maybank offers loan restructuring under the URUS program. You can apply for payment deferment of up to 6 months or extend your loan tenure to reduce monthly installments. Early settlement is allowed with a rebate on unearned interest charges calculated using the Rule of 78."
+  },
+  {
+    "id": "kb-005",
+    "title": "Foreign Currency Exchange and Remittance",
+    "category": "International Banking",
+    "source_url": "https://kb.maybank.com/forex-remittance",
+    "content": "Maybank offers competitive foreign exchange rates for over 30 currencies. Exchange can be done at branches, Maybank2u, or the MAE app. For international remittance, use Maybank2u or visit a branch. Transfer limits are RM50,000 per transaction online and higher limits at branches. Processing time is 1-3 business days for SWIFT transfers and same-day for transfers to selected ASEAN countries via the Maybank network. Fees vary by destination and amount."
+  }
+]

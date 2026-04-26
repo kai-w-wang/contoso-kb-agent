@@ -1,0 +1,140 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Maybank KB Agent API",
+    "description": "API for querying Maybank's knowledge base powered by Azure AI Foundry",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://apim-maybank-kb.azure-api.net",
+      "description": "Azure API Management Gateway"
+    }
+  ],
+  "paths": {
+    "/api/ask": {
+      "post": {
+        "operationId": "askQuestion",
+        "summary": "Ask a question to the Maybank knowledge base",
+        "description": "Sends a natural language question to the Maybank KB agent and returns an answer with optional citations from the knowledge base.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["question"],
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "The question to ask the knowledge base"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with answer and citations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "answer": {
+                      "type": "string",
+                      "description": "The answer from the knowledge base"
+                    },
+                    "citations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "description": "Source citations from the knowledge base"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/feedback": {
+      "post": {
+        "operationId": "submitFeedback",
+        "summary": "Submit feedback on a knowledge base answer",
+        "description": "Allows the user to rate and comment on the quality of an answer they received from the Maybank KB agent.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["rating"],
+                "properties": {
+                  "rating": {
+                    "type": "string",
+                    "enum": ["thumbs_up", "thumbs_down"],
+                    "description": "User rating: thumbs_up for helpful, thumbs_down for not helpful"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": ["accurate", "inaccurate", "incomplete", "outdated", "other"],
+                    "description": "Feedback category describing the answer quality"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Optional free-text comment from the user"
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "The original question that was asked"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feedback received successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Confirmation status"
+                    },
+                    "feedback_id": {
+                      "type": "string",
+                      "description": "Unique identifier for the feedback submission"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Thank you message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
