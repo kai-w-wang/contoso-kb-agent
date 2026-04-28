@@ -23,12 +23,19 @@ from maf_chat_backend import ChatRequest, FunctionChatOrchestratorService, setup
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 setup_logging()
-_shared_service = FunctionChatOrchestratorService()
+_shared_service: FunctionChatOrchestratorService | None = None
 
 # ----- Configuration (from Azure Function App Settings) -----
 PROJECT_ENDPOINT = os.environ.get("PROJECT_ENDPOINT")
 AGENT_NAME = os.environ.get("AGENT_NAME", "contoso-kb-agent")
 STORAGE_CONNECTION = os.environ.get("AzureWebJobsStorage", "")
+
+
+def _get_shared_service() -> FunctionChatOrchestratorService:
+    global _shared_service
+    if _shared_service is None:
+        _shared_service = FunctionChatOrchestratorService()
+    return _shared_service
 
 
 def _resolve_session_id(req: func.HttpRequest, body: dict) -> str:
@@ -123,7 +130,7 @@ async def ask(req: func.HttpRequest) -> func.HttpResponse:
             session_id=_resolve_session_id(req, body),
             user_query=question,
         )
-        result = await _shared_service.process(request_payload)
+        result = await _get_shared_service().process(request_payload)
         response_body = _to_m365_response(result.model_dump())
         logging.info("Shared backend returned answer with %s citations", len(response_body["citations"]))
         return func.HttpResponse(
