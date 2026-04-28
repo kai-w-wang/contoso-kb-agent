@@ -29,6 +29,11 @@
                     "type": "string",
                     "description": "The user's question about Contoso Bank products or services",
                     "example": "How do I open a savings account at Contoso Bank?"
+                  },
+                  "session_id": {
+                    "type": "string",
+                    "description": "Optional session identifier for the shared backend conversation state",
+                    "example": "m365-session-123"
                   }
                 }
               }
@@ -43,6 +48,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "session_id": {
+                      "type": "string",
+                      "description": "Resolved session identifier"
+                    },
                     "answer": {
                       "type": "string",
                       "description": "The grounded answer from the knowledge base"
@@ -60,9 +69,25 @@
                           "url": {
                             "type": "string",
                             "description": "URL of the source article"
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "Underlying source path or URL returned by the shared backend"
+                          },
+                          "chunk_id": {
+                            "type": "string",
+                            "description": "Retrieved chunk identifier"
+                          },
+                          "score": {
+                            "type": "number",
+                            "description": "Retrieval ranking score"
                           }
                         }
                       }
+                    },
+                    "grounded": {
+                      "type": "boolean",
+                      "description": "Whether the answer is grounded in retrieved evidence"
                     }
                   }
                 }

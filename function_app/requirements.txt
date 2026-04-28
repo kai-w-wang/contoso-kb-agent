@@ -1,5 +1,13 @@
-azure-functions
-azure-identity
+azure-functions==1.23.0
+azure-identity==1.23.1
 azure-data-tables
 azure-ai-projects>=2.1.0
 openai>=1.60.0
+pydantic==2.11.9
+python-dotenv==1.1.1
+azure-search-documents==11.5.2
+azure-cosmos==4.9.0
+fastmcp==3.1.0
+agent-framework-core==1.0.0rc3
+agent-framework-azure-ai==1.0.0rc3
+azure-monitor-opentelemetry

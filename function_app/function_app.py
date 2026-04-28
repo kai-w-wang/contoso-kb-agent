@@ -14,85 +14,69 @@ Endpoints:
 import json
 import logging
 import os
+import uuid
 from datetime import datetime, timezone
 
 import azure.functions as func
-from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
+
+from maf_chat_backend import ChatRequest, FunctionChatOrchestratorService, setup_logging
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+setup_logging()
+_shared_service = FunctionChatOrchestratorService()
 
 # ----- Configuration (from Azure Function App Settings) -----
 PROJECT_ENDPOINT = os.environ.get("PROJECT_ENDPOINT")
 AGENT_NAME = os.environ.get("AGENT_NAME", "contoso-kb-agent")
-MODEL_NAME = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4o-mini")
 STORAGE_CONNECTION = os.environ.get("AzureWebJobsStorage", "")
 
 
-def _get_credential():
-    """Return the appropriate Azure credential for the current environment."""
-    if os.environ.get("AZURE_FUNCTIONS_ENVIRONMENT") == "Production":
-        return ManagedIdentityCredential()
-    return DefaultAzureCredential()
+def _resolve_session_id(req: func.HttpRequest, body: dict) -> str:
+    candidate_values = [
+        body.get("session_id"),
+        body.get("conversation_id"),
+        body.get("thread_id"),
+        req.headers.get("x-session-id"),
+        req.headers.get("x-conversation-id"),
+        req.headers.get("x-ms-client-session-id"),
+    ]
+    for value in candidate_values:
+        if isinstance(value, str) and value.strip():
+            return value.strip()[:128]
+    return f"m365-{uuid.uuid4()}"
 
 
-def _get_openai_client():
-    """Create an OpenAI client via AIProjectClient (handles token scope correctly)."""
-    from azure.ai.projects import AIProjectClient
-
-    credential = _get_credential()
-    project_client = AIProjectClient(
-        endpoint=PROJECT_ENDPOINT,
-        credential=credential,
-    )
-    return project_client.get_openai_client()
-
-
-def _ask_foundry_agent(question: str) -> dict:
-    """Send a question to the Foundry agent and return structured response.
-
-    Returns:
-        {
-            "answer": "The grounded answer text...",
-            "citations": [
-                {"title": "...", "url": "..."},
-            ]
-        }
-    """
-    client = _get_openai_client()
-
-    response = client.responses.create(
-        model=MODEL_NAME,
-        input=question,
-        extra_body={
-            "agent_reference": {"name": AGENT_NAME, "type": "agent_reference"}
-        },
-    )
-
-    # Extract answer text and citations from the response
-    answer_text = ""
-    citations = []
-
-    for item in response.output:
-        if item.type == "message":
-            for content in item.content:
-                if content.type == "output_text":
-                    answer_text = content.text
-                    # Extract citation annotations
-                    if hasattr(content, "annotations") and content.annotations:
-                        for ann in content.annotations:
-                            if ann.type == "url_citation":
-                                citations.append({
-                                    "title": getattr(ann, "title", "Source"),
-                                    "url": ann.url,
-                                })
-
-    return {"answer": answer_text, "citations": citations}
+def _to_m365_response(result: dict) -> dict:
+    citations = result.get("citations", []) if isinstance(result, dict) else []
+    normalized_citations = []
+    if isinstance(citations, list):
+        for item in citations:
+            if not isinstance(item, dict):
+                continue
+            source = str(item.get("url") or item.get("source") or "")
+            normalized_citations.append(
+                {
+                    "title": str(item.get("title") or "Source"),
+                    "url": source,
+                    "source": source,
+                    "chunk_id": str(item.get("chunk_id") or ""),
+                    "score": item.get("score", 0.0),
+                }
+            )
+    return {
+        "session_id": result.get("session_id", ""),
+        "answer": result.get("answer", ""),
+        "citations": normalized_citations,
+        "grounded": bool(result.get("grounded", False)),
+        "trace": result.get("trace", {}),
+        "evaluator": result.get("evaluator", {}),
+    }
 
 
 # ----- HTTP Endpoint: POST /api/ask -----
 
 @app.route(route="ask", methods=["POST"])
-def ask(req: func.HttpRequest) -> func.HttpResponse:
+async def ask(req: func.HttpRequest) -> func.HttpResponse:
     """Handle a question from M365 Copilot.
 
     Request body:
@@ -134,17 +118,21 @@ def ask(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
         )
 
-    # Call the Foundry agent
     try:
-        result = _ask_foundry_agent(question)
-        logging.info(f"Agent returned answer with {len(result['citations'])} citations")
+        request_payload = ChatRequest(
+            session_id=_resolve_session_id(req, body),
+            user_query=question,
+        )
+        result = await _shared_service.process(request_payload)
+        response_body = _to_m365_response(result.model_dump())
+        logging.info("Shared backend returned answer with %s citations", len(response_body["citations"]))
         return func.HttpResponse(
-            json.dumps(result, ensure_ascii=False),
+            json.dumps(response_body, ensure_ascii=False),
             status_code=200,
             mimetype="application/json",
         )
     except Exception as e:
-        logging.error(f"Foundry agent call failed: {e}")
+        logging.error("Shared backend call failed: %s", e)
         return func.HttpResponse(
             json.dumps({"error": "AGENT_ERROR", "message": str(e)}),
             status_code=502,
