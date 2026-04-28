@@ -1,4 +1,4 @@
-# One-time infrastructure setup for Maybank KB Agent
+# One-time infrastructure setup for Contoso Bank KB Agent
 # Run this script once to provision AI Search, configure RBAC, and create the project connection.
 #
 # Prerequisites:
@@ -7,18 +7,18 @@
 #   - Foundry project already provisioned via: azd provision
 
 param(
-    [string]$ResourceGroup = "rg-maybank-kb-agent",
-    [string]$SearchServiceName = "maybank-kb-search",
+    [string]$ResourceGroup = "rg-contoso-kb-agent",
+    [string]$SearchServiceName = "contoso-kb-search",
     [string]$FoundryAccountName = "ai-account-worwjaulcylli",
-    [string]$ProjectName = "ai-project-maybank-kb-agent",
+    [string]$ProjectName = "ai-project-contoso-kb-agent",
     [string]$Location = "eastus",
-    [string]$ConnectionName = "maybank-kb-search-connection"
+    [string]$ConnectionName = "contoso-kb-search-connection"
 )
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "============================================================"
-Write-Host "Maybank KB Agent — Infrastructure Setup"
+Write-Host "Contoso Bank KB Agent — Infrastructure Setup"
 Write-Host "============================================================"
 
 # --- Step 1: Create AI Search Service ---

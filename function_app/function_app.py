@@ -1,4 +1,4 @@
-"""Azure Function — API backend for the Maybank KB Declarative Agent.
+"""Azure Function — API backend for the Contoso Bank KB Declarative Agent.
 
 This function serves as the bridge between M365 Copilot and the Foundry agent.
 
@@ -23,7 +23,7 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 # ----- Configuration (from Azure Function App Settings) -----
 PROJECT_ENDPOINT = os.environ.get("PROJECT_ENDPOINT")
-AGENT_NAME = os.environ.get("AGENT_NAME", "maybank-kb-agent")
+AGENT_NAME = os.environ.get("AGENT_NAME", "contoso-kb-agent")
 MODEL_NAME = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4o-mini")
 STORAGE_CONNECTION = os.environ.get("AzureWebJobsStorage", "")
 
@@ -100,9 +100,9 @@ def ask(req: func.HttpRequest) -> func.HttpResponse:
 
     Response body:
         {
-            "answer": "To open a savings account at Maybank...",
+            "answer": "To open a savings account at Contoso Bank...",
             "citations": [
-                { "title": "Account Opening", "url": "https://kb.maybank.com/..." }
+                { "title": "Account Opening", "url": "https://kb.contoso-bank.com/..." }
             ]
         }
     """

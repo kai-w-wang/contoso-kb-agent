@@ -18,7 +18,7 @@ def main():
     parser = argparse.ArgumentParser(description="Ingest KB articles into Azure AI Search")
     parser.add_argument(
         "--search-endpoint",
-        default="https://maybank-kb-search.search.windows.net",
+        default="https://contoso-kb-search.search.windows.net",
         help="Azure AI Search endpoint URL",
     )
     parser.add_argument(
@@ -31,7 +31,7 @@ def main():
     config = get_config()
 
     print("=" * 60)
-    print("Maybank KB Agent — Data Ingestion")
+    print("Contoso Bank KB Agent — Data Ingestion")
     print("=" * 60)
     print(f"\nSearch endpoint: {args.search_endpoint}")
     print(f"Index name     : {config.search_index_name}")

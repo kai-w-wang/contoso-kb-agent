@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Maybank KB Agent API",
-    "description": "API for querying the Maybank Knowledge Base via Azure AI Foundry agent. Returns grounded answers with citations from KB articles.",
+    "title": "Contoso Bank KB Agent API",
+    "description": "API for querying the Contoso Bank Knowledge Base via Azure AI Foundry agent. Returns grounded answers with citations from KB articles.",
     "version": "1.0.0"
   },
   "servers": [
@@ -15,8 +15,8 @@
     "/api/ask": {
       "post": {
         "operationId": "askKnowledgeBase",
-        "summary": "Ask a question about Maybank products and services",
-        "description": "Sends a question to the Maybank Knowledge Base agent and returns a grounded answer with citations. Use this for questions about account opening, credit cards, loans, internet banking, and foreign exchange.",
+        "summary": "Ask a question about Contoso Bank products and services",
+        "description": "Sends a question to the Contoso Bank Knowledge Base agent and returns a grounded answer with citations. Use this for questions about account opening, credit cards, loans, internet banking, and foreign exchange.",
         "requestBody": {
           "required": true,
           "content": {
@@ -27,8 +27,8 @@
                 "properties": {
                   "question": {
                     "type": "string",
-                    "description": "The user's question about Maybank products or services",
-                    "example": "How do I open a savings account at Maybank?"
+                    "description": "The user's question about Contoso Bank products or services",
+                    "example": "How do I open a savings account at Contoso Bank?"
                   }
                 }
               }

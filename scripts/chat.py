@@ -1,4 +1,4 @@
-"""Interactive streaming chat with the Maybank KB Agent (New Foundry Model).
+"""Interactive streaming chat with the Contoso Bank KB Agent (New Foundry Model).
 
 Uses the OpenAI Responses API with agent_reference for the new-model agent.
 
@@ -54,7 +54,7 @@ def main():
     config = get_config()
 
     print("=" * 60)
-    print("  Maybank KB Agent — Interactive Chat (Streaming)")
+    print("  Contoso Bank KB Agent — Interactive Chat (Streaming)")
     print("  (New Foundry Model — Responses API)")
     print("=" * 60)
     print(f"  Agent : {config.agent_name}")

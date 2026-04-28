@@ -1,4 +1,4 @@
-"""Deploy or update the Maybank KB prompt agent (New Foundry Model).
+"""Deploy or update the Contoso Bank KB prompt agent (New Foundry Model).
 
 Usage:
     python scripts/deploy_agent.py
@@ -15,7 +15,7 @@ from src.agent import deploy_or_update
 
 def main():
     print("=" * 60)
-    print("Maybank KB Agent — Deploy (New Foundry Model)")
+    print("Contoso Bank KB Agent — Deploy (New Foundry Model)")
     print("=" * 60)
 
     config = get_config()

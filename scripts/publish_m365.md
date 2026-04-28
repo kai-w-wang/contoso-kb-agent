@@ -1,4 +1,4 @@
-# Publishing Maybank KB Agent to M365 Agents
+# Publishing Contoso Bank KB Agent to M365 Agents
 
 ## Overview
 
@@ -10,20 +10,20 @@ Once the Foundry prompt agent is tested and working, publish it to **M365 Agents
 
 1. **Open Azure AI Foundry portal**
    - Navigate to [https://ai.azure.com](https://ai.azure.com)
-   - Select your project: `ai-project-maybank-kb-agent`
+   - Select your project: `ai-project-contoso-kb-agent`
 
 2. **Navigate to Agents**
    - Go to **Build** → **Agents**
-   - Select `maybank-kb-agent`
+   - Select `contoso-kb-agent`
 
 3. **Publish to M365**
    - Click **Deploy** → **Publish to Microsoft 365**
    - Configure the agent manifest:
-     - **Display name**: `Maybank KB Assistant`
-     - **Short description**: `Search Maybank knowledge base articles`
-     - **Full description**: `An AI assistant that helps you find information from Maybank's knowledge base. Ask about account opening, credit cards, loans, internet banking, and more.`
+     - **Display name**: `Contoso Bank KB Assistant`
+     - **Short description**: `Search Contoso Bank knowledge base articles`
+     - **Full description**: `An AI assistant that helps you find information from Contoso Bank's knowledge base. Ask about account opening, credit cards, loans, internet banking, and more.`
      - **Icon**: Upload a custom icon (recommended 192x192 PNG)
-     - **Accent color**: `#FFC107` (Maybank yellow)
+     - **Accent color**: `#FFC107` (Contoso Bank brand color)
 
 4. **Submit for Admin Approval**
    - The app will appear in **Teams Admin Center** → **Manage Apps** (pending approval)
@@ -58,18 +58,18 @@ teams-app/
   "version": "1.0.0",
   "id": "{{APP_ID}}",
   "developer": {
-    "name": "Maybank",
-    "websiteUrl": "https://www.maybank.com",
-    "privacyUrl": "https://www.maybank.com/privacy",
-    "termsOfUseUrl": "https://www.maybank.com/terms"
+    "name": "Contoso Bank",
+    "websiteUrl": "https://www.contoso-bank.com",
+    "privacyUrl": "https://www.contoso-bank.com/privacy",
+    "termsOfUseUrl": "https://www.contoso-bank.com/terms"
   },
   "name": {
-    "short": "Maybank KB Assistant",
-    "full": "Maybank Knowledge Base Assistant"
+    "short": "Contoso Bank KB Assistant",
+    "full": "Contoso Bank Knowledge Base Assistant"
   },
   "description": {
-    "short": "Search Maybank knowledge base articles",
-    "full": "An AI assistant that helps you find information from Maybank's knowledge base. Ask about account opening, credit cards, loans, internet banking, and more."
+    "short": "Search Contoso Bank knowledge base articles",
+    "full": "An AI assistant that helps you find information from Contoso Bank's knowledge base. Ask about account opening, credit cards, loans, internet banking, and more."
   },
   "icons": {
     "color": "color.png",
@@ -79,7 +79,7 @@ teams-app/
   "copilotAgents": {
     "declarativeAgents": [
       {
-        "id": "maybank-kb-agent",
+        "id": "contoso-kb-agent",
         "file": "declarativeAgent.json"
       }
     ]
@@ -93,14 +93,14 @@ teams-app/
 {
   "$schema": "https://aka.ms/json-schemas/copilot/declarative-agent/v1.3/schema.json",
   "version": "v1.3",
-  "name": "Maybank KB Assistant",
-  "description": "Searches Maybank knowledge base to answer your questions",
-  "instructions": "You are Maybank's Knowledge Base Assistant. Search the knowledge base and provide accurate, cited answers. If information is not found, direct users to Maybank support at 1-300-88-6688.",
+  "name": "Contoso Bank KB Assistant",
+  "description": "Searches Contoso Bank knowledge base to answer your questions",
+  "instructions": "You are Contoso Bank's Knowledge Base Assistant. Search the knowledge base and provide accurate, cited answers. If information is not found, direct users to Contoso Bank support at 1-300-88-6688.",
   "conversation_starters": [
-    { "title": "Open an account", "text": "How do I open a new savings account at Maybank?" },
-    { "title": "Credit card", "text": "What are the requirements for a Maybank credit card?" },
-    { "title": "Internet banking", "text": "How do I register for Maybank2u internet banking?" },
-    { "title": "Foreign exchange", "text": "How can I send money internationally via Maybank?" },
+    { "title": "Open an account", "text": "How do I open a new savings account at Contoso Bank?" },
+    { "title": "Credit card", "text": "What are the requirements for a Contoso Bank credit card?" },
+    { "title": "Internet banking", "text": "How do I register for Contoso Online Banking internet banking?" },
+    { "title": "Foreign exchange", "text": "How can I send money internationally via Contoso Bank?" },
     { "title": "Loan help", "text": "What options are available for loan restructuring?" }
   ]
 }

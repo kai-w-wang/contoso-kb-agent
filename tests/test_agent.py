@@ -1,4 +1,4 @@
-"""Smoke tests for the Maybank KB Agent — validates search grounding and response quality.
+"""Smoke tests for the Contoso Bank KB Agent — validates search grounding and response quality.
 
 Uses the NEW Foundry agent model (azure-ai-projects 2.1.0+) with Responses API.
 """
@@ -62,7 +62,7 @@ class TestKBSearchGrounding:
         assert response, "Agent returned empty response"
         response_lower = response.lower()
         assert any(
-            term in response_lower for term in ["nric", "passport", "rm250", "maybank2u"]
+            term in response_lower for term in ["nric", "passport", "rm250", "contoso"]
         ), f"Response missing expected KB content: {response[:200]}"
 
     def test_credit_card_requirements(self, openai_client, agent_name):
@@ -79,7 +79,7 @@ class TestKBSearchGrounding:
         response = _ask_agent(openai_client, agent_name, "Tell me about internet banking registration")
         assert response, "Agent returned empty response"
         assert any(
-            term in response.lower() for term in ["kb.maybank.com", "source", "internet-banking"]
+            term in response.lower() for term in ["kb.contoso-bank.com", "source", "internet-banking"]
         ), f"Response missing citations: {response[:300]}"
 
     def test_no_answer_graceful(self, openai_client, agent_name):

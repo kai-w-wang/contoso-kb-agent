@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Maybank KB Agent API",
-    "description": "API for querying Maybank's knowledge base powered by Azure AI Foundry",
+    "title": "Contoso Bank KB Agent API",
+    "description": "API for querying Contoso Bank's knowledge base powered by Azure AI Foundry",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://apim-maybank-kb.azure-api.net",
+      "url": "https://apim-contoso-kb.azure-api.net",
       "description": "Azure API Management Gateway"
     }
   ],
@@ -15,8 +15,8 @@
     "/api/ask": {
       "post": {
         "operationId": "askQuestion",
-        "summary": "Ask a question to the Maybank knowledge base",
-        "description": "Sends a natural language question to the Maybank KB agent and returns an answer with optional citations from the knowledge base.",
+        "summary": "Ask a question to the Contoso Bank knowledge base",
+        "description": "Sends a natural language question to the Contoso Bank KB agent and returns an answer with optional citations from the knowledge base.",
         "requestBody": {
           "required": true,
           "content": {
@@ -76,7 +76,7 @@
       "post": {
         "operationId": "submitFeedback",
         "summary": "Submit feedback on a knowledge base answer",
-        "description": "Allows the user to rate and comment on the quality of an answer they received from the Maybank KB agent.",
+        "description": "Allows the user to rate and comment on the quality of an answer they received from the Contoso Bank KB agent.",
         "requestBody": {
           "required": true,
           "content": {

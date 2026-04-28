@@ -91,7 +91,7 @@ def publish_to_m365(zip_path: str, token: str):
             print(f"   External ID: {body.get('externalId', 'N/A')}")
             print(f"\nNext steps:")
             print(f"  1. Go to Teams Admin Center → Manage Apps")
-            print(f"  2. Search for 'Maybank KB Assistant'")
+            print(f"  2. Search for 'Contoso Bank KB Assistant'")
             print(f"  3. Approve the app for your organization")
             print(f"  4. Users can then find it in M365 Copilot")
             return body
@@ -116,7 +116,7 @@ def main():
 
     # Step 1: Create ZIP package
     print("\n📦 Step 1: Creating app package...")
-    zip_path = os.path.join(PROJECT_ROOT, "m365-app", "maybank-kb-agent.zip")
+    zip_path = os.path.join(PROJECT_ROOT, "m365-app", "contoso-kb-agent.zip")
     create_zip_package(zip_path)
 
     # Step 2: Get Graph token

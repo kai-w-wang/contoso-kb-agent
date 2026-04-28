@@ -1,4 +1,4 @@
-# Maybank KB Agent — Azure Foundry Prompt Agent
+# Contoso Bank KB Agent — Azure Foundry Prompt Agent
 
 A Python project that creates and manages an Azure Foundry **prompt agent** grounded on knowledge base articles via **Azure AI Search**. The agent is published to **M365 Agents** (Teams / Microsoft 365 Copilot).
 
@@ -8,7 +8,7 @@ A Python project that creates and manages an Azure Foundry **prompt agent** grou
 ┌──────────────────┐      ┌───────────────────────┐      ┌─────────────────────┐
 │  M365 Agents     │ ──── │  Azure Foundry         │ ──── │  Azure AI Search    │
 │  (Teams/Copilot) │      │  Prompt Agent          │      │  (Vector Index)     │
-│                  │      │  maybank-kb-agent       │      │  kb-articles-index  │
+│                  │      │  contoso-kb-agent       │      │  kb-articles-index  │
 └──────────────────┘      └───────────────────────┘      └─────────────────────┘
                                     │
                                     ▼
@@ -20,7 +20,7 @@ A Python project that creates and manages an Azure Foundry **prompt agent** grou
 ## Project Structure
 
 ```
-maybank-kb-agent/
+contoso-kb-agent/
 ├── src/
 │   ├── __init__.py
 │   ├── config.py            # Configuration from environment variables

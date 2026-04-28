@@ -27,19 +27,19 @@
       "value": "20260426"
     },
     "firstProjectName": {
-      "value": "maybank-kb-project"
+      "value": "contoso-kb-project"
     },
     "projectDescription": {
-      "value": "Maybank KB Agent with private networking"
+      "value": "Contoso Bank KB Agent with private networking"
     },
     "displayName": {
-      "value": "Maybank KB Private Agent"
+      "value": "Contoso Bank KB Private Agent"
     },
     "existingVnetResourceId": {
-      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-maybank-kb-agent/providers/Microsoft.Network/virtualNetworks/vnet-maybank-kb"
+      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-contoso-kb-agent/providers/Microsoft.Network/virtualNetworks/vnet-contoso-kb"
     },
     "vnetName": {
-      "value": "vnet-maybank-kb"
+      "value": "vnet-contoso-kb"
     },
     "agentSubnetName": {
       "value": "subnet-agent-v2"
@@ -57,14 +57,14 @@
       "value": "10.0.0.0/16"
     },
     "aiSearchResourceId": {
-      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-maybank-kb-agent/providers/Microsoft.Search/searchServices/maybank-kb-search"
+      "value": "/subscriptions/0d278827-686c-476e-93ef-3d3d6acabb6a/resourceGroups/rg-contoso-kb-agent/providers/Microsoft.Search/searchServices/contoso-kb-search"
     },
     "existingDnsZones": {
       "value": {
         "privatelink.services.ai.azure.com": "",
         "privatelink.openai.azure.com": "",
-        "privatelink.cognitiveservices.azure.com": "rg-maybank-kb-agent",
-        "privatelink.search.windows.net": "rg-maybank-kb-agent",
+        "privatelink.cognitiveservices.azure.com": "rg-contoso-kb-agent",
+        "privatelink.search.windows.net": "rg-contoso-kb-agent",
         "privatelink.blob.core.windows.net": "",
         "privatelink.documents.azure.com": ""
       }

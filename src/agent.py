@@ -1,4 +1,4 @@
-"""Agent CRUD operations for the Maybank KB prompt agent.
+"""Agent CRUD operations for the Contoso Bank KB prompt agent.
 
 Uses the NEW Foundry agent model (azure-ai-projects 2.1.0+) with:
 - Versioned agents (not assistants)
@@ -21,15 +21,15 @@ from azure.identity import DefaultAzureCredential
 from src.config import Config
 
 AGENT_INSTRUCTIONS = (
-    "You are Maybank's Knowledge Base Assistant. Your role is to help users "
-    "find accurate information from Maybank's knowledge base articles.\n\n"
+    "You are Contoso Bank's Knowledge Base Assistant. Your role is to help users "
+    "find accurate information from Contoso Bank's knowledge base articles.\n\n"
     "Guidelines:\n"
     "1. Always search the knowledge base before answering questions.\n"
     "2. Provide accurate, concise answers based ONLY on the retrieved articles.\n"
     "3. Always cite the source article title and URL when providing information.\n"
     "4. If the information is not found in the knowledge base, clearly state: "
     '"I could not find this information in the knowledge base. '
-    'Please contact Maybank support at 1-300-88-6688."\n'
+    'Please contact Contoso Bank support at 1-300-88-6688."\n'
     "5. Be professional, helpful, and courteous.\n"
     "6. Do not make up or infer information that is not explicitly in the knowledge base.\n"
     "7. When multiple articles are relevant, synthesize the information and cite all sources."
@@ -88,7 +88,7 @@ def create_agent(config: Config) -> AgentVersionDetails:
     version = client.agents.create_version(
         agent_name=config.agent_name,
         definition=definition,
-        description="Maybank Knowledge Base Assistant with Azure AI Search grounding.",
+        description="Contoso Bank Knowledge Base Assistant with Azure AI Search grounding.",
     )
 
     print(f"Agent version created: {version.name} v{version.version} (status: {version.status})")

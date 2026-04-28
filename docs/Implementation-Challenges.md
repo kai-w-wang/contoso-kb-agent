@@ -97,9 +97,9 @@ extra_body:      "agent" (deprecated)  →  "agent_reference" (correct)
 ---
 
 ### Challenge 2.3: API Plugin Response Semantics Format
-**Problem**: Setting `response_semantics.properties.title` to `{"static_value": "Maybank KB Answer"}` (as per some documentation examples) caused upload failure.
+**Problem**: Setting `response_semantics.properties.title` to `{"static_value": "Contoso Bank KB Answer"}` (as per some documentation examples) caused upload failure.
 
-**Resolution**: Values must be **plain strings**: `"title": "Maybank KB Answer"`, NOT objects.
+**Resolution**: Values must be **plain strings**: `"title": "Contoso Bank KB Answer"`, NOT objects.
 
 **Customer Awareness**: The API plugin schema documentation has inconsistencies between examples and actual validation. Test uploads incrementally.
 
@@ -176,7 +176,7 @@ extra_body:      "agent" (deprecated)  →  "agent_reference" (correct)
 ### Challenge 4.1: Storage Account Name Constraints from Bicep Template
 **Problem**: The official Bicep template for private Foundry (`foundry-samples/15-private-network-standard-agent-setup`) generates a storage account name by appending the `aiServices` parameter name with a unique suffix. Storage names must be ≤24 chars, lowercase, no hyphens.
 
-**First attempt**: `aiServices = "ai-maybank-private"` → storage name too long and contained hyphens.  
+**First attempt**: `aiServices = "ai-contoso-private"` → storage name too long and contained hyphens.  
 **Second attempt**: `aiServices = "ai-mbk-pvt"` → still contained hyphens.  
 **Third attempt**: `aiServices = "aimbkpvt"` → worked (8 chars, no hyphens).
 
@@ -218,11 +218,11 @@ extra_body:      "agent" (deprecated)  →  "agent_reference" (correct)
 ---
 
 ### Challenge 4.5: Agent Version Required for agent_reference
-**Problem**: Created the agent via assistants API (`POST /assistants`). The Function's `agent_reference` lookup returned `404: Agent maybank-kb-agent with version  not found`.
+**Problem**: Created the agent via assistants API (`POST /assistants`). The Function's `agent_reference` lookup returned `404: Agent contoso-kb-agent with version  not found`.
 
 **Root Cause**: The `agent_reference` protocol resolves agents by **name + version**, not by assistant ID. An agent version must be explicitly created via the agent versions API.
 
-**Resolution**: Created an agent version via `POST /agents/maybank-kb-agent/versions` with the full definition including `kind: "prompt"`.
+**Resolution**: Created an agent version via `POST /agents/contoso-kb-agent/versions` with the full definition including `kind: "prompt"`.
 
 **Additional complication**: The agent versions API uses a **different tool schema** than the assistants API:
 - Assistants: `tools: [{"type": "azure_ai_search"}]` + `tool_resources: {azure_ai_search: {indexes: [...]}}`

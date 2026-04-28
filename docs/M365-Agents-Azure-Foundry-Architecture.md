@@ -232,7 +232,7 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph VNet["VNet: vnet-maybank-kb (10.0.0.0/16)"]
+    subgraph VNet["VNet: vnet-contoso-kb (10.0.0.0/16)"]
         subgraph S1["subnet-apim<br/>10.0.1.0/24"]
             APIM["APIM<br/>(External)"]
         end
@@ -300,7 +300,7 @@ sequenceDiagram
 
     User->>Copilot: "How do I open a savings account?"
     
-    Note over Copilot: Intent Detection<br/>Matches Maybank KB Plugin<br/>Extracts: question parameter
+    Note over Copilot: Intent Detection<br/>Matches Contoso Bank KB Plugin<br/>Extracts: question parameter
     
     Copilot->>APIM: POST /api/ask<br/>{"question": "How do I open..."}
     
@@ -308,7 +308,7 @@ sequenceDiagram
     
     Note over Func: AIProjectClient<br/>Managed Identity<br/>Token: cognitiveservices.azure.com
     
-    Func->>Foundry: responses.create()<br/>agent_reference: "maybank-kb-agent"
+    Func->>Foundry: responses.create()<br/>agent_reference: "contoso-kb-agent"
     
     Note over Foundry: Agent resolves version<br/>Executes azure_ai_search tool
     
@@ -499,7 +499,7 @@ The following controls are recommended for regulated financial services deployme
 
 ```mermaid
 flowchart TB
-    subgraph "Resource Group: rg-maybank-kb-agent"
+    subgraph "Resource Group: rg-contoso-kb-agent"
         subgraph "Networking"
             VNet["VNet + Subnets"]
             DNS["6 Private DNS Zones"]
@@ -768,7 +768,7 @@ flowchart LR
 ## 16. File Structure Reference
 
 ```
-maybank-kb-agent/
+contoso-kb-agent/
 ├── function_app/
 │   ├── function_app.py          # Azure Function — API backend
 │   ├── requirements.txt         # Python dependencies
