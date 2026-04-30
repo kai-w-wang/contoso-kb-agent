@@ -1,0 +1,100 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- Route this operation directly to the espi Azure Function backend. -->
+        <set-backend-service base-url="https://mbb-espi-fapp-dev-eac9cpguace4c9gd.southeastasia-01.azurewebsites.net" />
+        <rewrite-uri template="/api/chat?code=****" />
+        <!-- Transform M365 request payload into WebChat payload expected by espi/chat_workflow. -->
+        <set-variable name="m365RequestBody" value="@{
+			var raw = context.Request.Body.As<string>(preserveContent: true);
+			if (string.IsNullOrWhiteSpace(raw))
+			{
+				return new Newtonsoft.Json.Linq.JObject();
+			}
+			return Newtonsoft.Json.Linq.JObject.Parse(raw);
+		}" />
+        <set-body>@{
+			var body = (Newtonsoft.Json.Linq.JObject)context.Variables["m365RequestBody"];
+
+			var sessionId =
+                context.Request.Headers.GetValueOrDefault("x-session-id", "") ?? 
+                context.Request.Headers.GetValueOrDefault("x-conversation-id", "") ?? 
+                context.Request.Headers.GetValueOrDefault("x-ms-client-session-id", "") ??
+				body.SelectToken("session_id") ??
+				body.SelectToken("conversation_id") ??
+				body.SelectToken("thread_id") ??
+				body.SelectToken("client_tracking_id") ??
+				context.RequestId;
+
+			var userQuery =
+				body.SelectToken("question") ??
+				body.SelectToken("user_query") ??
+				body.SelectToken("input") ??
+				string.Empty;
+
+			var transformed = new Newtonsoft.Json.Linq.JObject
+			{
+				["session_id"] = sessionId,
+				["user_query"] = userQuery
+			};
+
+			return transformed.ToString(Newtonsoft.Json.Formatting.None);
+		}</set-body>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-method>POST</set-method>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <!-- Transform WebChat response into M365 response contract. -->
+        <choose>
+            <when condition="@((context.Response != null) &amp;&amp; context.Response.StatusCode == 200)">
+                <set-variable name="webchatResponseBody" value="@{
+					var raw = context.Response.Body.As&lt;string&gt;(preserveContent: true);
+					if (string.IsNullOrWhiteSpace(raw))
+					{
+						return new Newtonsoft.Json.Linq.JObject();
+					}
+					return Newtonsoft.Json.Linq.JObject.Parse(raw);
+				}" />
+                <set-body>@{
+					var body = (Newtonsoft.Json.Linq.JObject)context.Variables["webchatResponseBody"];
+					var sourceCitations = body["citations"] as Newtonsoft.Json.Linq.JArray ?? new Newtonsoft.Json.Linq.JArray();
+					var mappedCitations = new Newtonsoft.Json.Linq.JArray();
+
+					foreach (var citation in sourceCitations)
+					{
+						var title = (string)citation["title"] ?? (string)citation["source"] ?? "Source";
+						var url = (string)citation["url"] ?? (string)citation["source"] ?? string.Empty;
+						var content = (string)citation["content"] ?? string.Empty;
+
+						mappedCitations.Add(new Newtonsoft.Json.Linq.JObject
+						{
+							["title"] = title,
+							["url"] = url,
+							["content"] = content
+						});
+					}
+
+					var transformed = new Newtonsoft.Json.Linq.JObject
+					{
+						["answer"] = (string)body["answer"] ?? string.Empty,
+						["citations"] = mappedCitations
+					};
+
+					return transformed.ToString(Newtonsoft.Json.Formatting.None);
+				}</set-body>
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+            </when>
+        </choose>
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
