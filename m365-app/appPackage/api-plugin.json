@@ -1,20 +1,20 @@
 {
   "$schema": "https://aka.ms/json-schemas/copilot/plugin/v2.2/schema.json",
   "schema_version": "v2.2",
-  "name_for_human": "Contoso Bank KB Search",
-  "description_for_human": "Search the Contoso Bank knowledge base and provide feedback on answers.",
-  "description_for_model": "This plugin searches the Contoso Bank knowledge base powered by Azure AI Search. Use it to find answers about account opening, credit cards, loans, digital banking, security, and other banking topics. It also accepts user feedback on answer quality. When a user wants to give feedback or rate an answer, use the submitFeedback function.",
-  "namespace": "contosoKb",
+  "name_for_human": "Maybank KB Search",
+  "description_for_human": "Search the Maybank knowledge base and provide feedback on answers.",
+  "description_for_model": "This plugin searches the Maybank knowledge base powered by Azure AI Search. Use it to find answers about account opening, credit cards, loans, digital banking, security, and other banking topics. It also accepts user feedback on answer quality. When a user wants to give feedback or rate an answer, use the submitFeedback function.",
+  "namespace": "maybankKb",
   "functions": [
     {
       "name": "askQuestion",
-      "description": "Ask a question to the Contoso Bank knowledge base and get an answer with citations.",
+      "description": "Ask a question to the Maybank knowledge base and get an answer with citations.",
       "capabilities": {
         "response_semantics": {
           "data_path": "$",
           "properties": {
-            "title": "Contoso Bank KB Answer",
-            "subtitle": "From Contoso Bank Knowledge Base"
+            "title": "Maybank KB Answer",
+            "subtitle": "From Maybank Knowledge Base"
           },
           "static_template": {
             "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

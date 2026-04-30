@@ -12,7 +12,7 @@
     }
   ],
   "paths": {
-    "/api/ask": {
+    "/api/chat": {
       "post": {
         "operationId": "askKnowledgeBase",
         "summary": "Ask a question about Contoso Bank products and services",
