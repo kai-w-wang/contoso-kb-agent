@@ -1,0 +1,19 @@
+#### Direct Call
+
+POST https://mbb-espi-fapp-dev-eac9cpguace4c9gd.southeastasia-01.azurewebsites.net/api/chat?code={{$dotenv api_key}}
+content-type: application/json; charset=utf-8
+
+{
+    "session_id": "740a651d424b42f3b97801c57a296865",
+    "user_query": "what can you do?"
+}
+
+### APIM Proxy
+
+POST https://apim-maybank-kb.azure-api.net/api/chat
+content-type: application/json; charset=utf-8
+
+{
+    "session_id": "740a651d424b42f3b97801c57a296865",
+    "user_query": "what can you do?"
+}

@@ -3,42 +3,57 @@
         <base />
         <!-- Route this operation directly to the espi Azure Function backend. -->
         <set-backend-service base-url="https://mbb-espi-fapp-dev-eac9cpguace4c9gd.southeastasia-01.azurewebsites.net" />
-        <rewrite-uri template="/api/chat?code=****" />
+        <rewrite-uri template="api/chat?code=****" />
         <!-- Transform M365 request payload into WebChat payload expected by espi/chat_workflow. -->
         <set-variable name="m365RequestBody" value="@{
-			var raw = context.Request.Body.As<string>(preserveContent: true);
-			if (string.IsNullOrWhiteSpace(raw))
-			{
-				return new Newtonsoft.Json.Linq.JObject();
-			}
-			return Newtonsoft.Json.Linq.JObject.Parse(raw);
+            var raw = context.Request.Body.As<string>(preserveContent: true);
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+            	return new Newtonsoft.Json.Linq.JObject();
+            }
+            return Newtonsoft.Json.Linq.JObject.Parse(raw);
 		}" />
         <set-body>@{
-			var body = (Newtonsoft.Json.Linq.JObject)context.Variables["m365RequestBody"];
+            var body = (Newtonsoft.Json.Linq.JObject)context.Variables["m365RequestBody"];
 
-			var sessionId =
-                context.Request.Headers.GetValueOrDefault("x-session-id", "") ?? 
-                context.Request.Headers.GetValueOrDefault("x-conversation-id", "") ?? 
-                context.Request.Headers.GetValueOrDefault("x-ms-client-session-id", "") ??
-				body.SelectToken("session_id") ??
-				body.SelectToken("conversation_id") ??
-				body.SelectToken("thread_id") ??
-				body.SelectToken("client_tracking_id") ??
-				context.RequestId;
-
-			var userQuery =
-				body.SelectToken("question") ??
-				body.SelectToken("user_query") ??
-				body.SelectToken("input") ??
-				string.Empty;
-
-			var transformed = new Newtonsoft.Json.Linq.JObject
-			{
-				["session_id"] = sessionId,
-				["user_query"] = userQuery
-			};
-
-			return transformed.ToString(Newtonsoft.Json.Formatting.None);
+            var sessionId = (string)context.Request.Headers.GetValueOrDefault("x-session-id", "");
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = context.Request.Headers.GetValueOrDefault("x-conversation-id", "");
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = context.Request.Headers.GetValueOrDefault("x-ms-client-session-id", "");
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = (string)body["session_id"];
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = (string)body["conversation_id"];
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = (string)body["thread_id"];
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = (string)body["client_tracking_id"];
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = (string)context.RequestId.ToString();
+            }
+            if (string.IsNullOrEmpty(sessionId)) {
+                sessionId = $"new_{Guid.NewGuid()}";
+            }
+            var userQuery = (string)body["question"];
+            if (string.IsNullOrEmpty(userQuery)) {
+                userQuery = (string)body["user_query"];
+            }
+            if (string.IsNullOrEmpty(userQuery)) {
+                userQuery = (string)body["input"];
+            }
+            var transformed = new Newtonsoft.Json.Linq.JObject
+            {
+            	["session_id"] = sessionId,
+            	["user_query"] = userQuery
+            };
+            return transformed.ToString(Newtonsoft.Json.Formatting.None);
 		}</set-body>
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
@@ -54,40 +69,40 @@
         <choose>
             <when condition="@((context.Response != null) &amp;&amp; context.Response.StatusCode == 200)">
                 <set-variable name="webchatResponseBody" value="@{
-					var raw = context.Response.Body.As&lt;string&gt;(preserveContent: true);
-					if (string.IsNullOrWhiteSpace(raw))
-					{
-						return new Newtonsoft.Json.Linq.JObject();
-					}
-					return Newtonsoft.Json.Linq.JObject.Parse(raw);
-				}" />
+            		var raw = context.Response.Body.As&lt;string&gt;(preserveContent: true);
+            		if (string.IsNullOrWhiteSpace(raw))
+            		{
+                        return new Newtonsoft.Json.Linq.JObject();
+            		}
+            		return Newtonsoft.Json.Linq.JObject.Parse(raw);
+            	}" />
                 <set-body>@{
-					var body = (Newtonsoft.Json.Linq.JObject)context.Variables["webchatResponseBody"];
-					var sourceCitations = body["citations"] as Newtonsoft.Json.Linq.JArray ?? new Newtonsoft.Json.Linq.JArray();
-					var mappedCitations = new Newtonsoft.Json.Linq.JArray();
+            		var body = (Newtonsoft.Json.Linq.JObject)context.Variables["webchatResponseBody"];
+            		var sourceCitations = body["citations"] as Newtonsoft.Json.Linq.JArray ?? new Newtonsoft.Json.Linq.JArray();
+            		var mappedCitations = new Newtonsoft.Json.Linq.JArray();
 
-					foreach (var citation in sourceCitations)
-					{
-						var title = (string)citation["title"] ?? (string)citation["source"] ?? "Source";
-						var url = (string)citation["url"] ?? (string)citation["source"] ?? string.Empty;
-						var content = (string)citation["content"] ?? string.Empty;
+            		foreach (var citation in sourceCitations)
+            		{
+                        var title = (string)citation["title"] ?? (string)citation["source"] ?? "Source";
+                        var url = (string)citation["url"] ?? (string)citation["source"] ?? string.Empty;
+                        var content = (string)citation["content"] ?? string.Empty;
 
-						mappedCitations.Add(new Newtonsoft.Json.Linq.JObject
-						{
-							["title"] = title,
-							["url"] = url,
-							["content"] = content
-						});
-					}
+                        mappedCitations.Add(new Newtonsoft.Json.Linq.JObject
+                        {
+                        	["title"] = title,
+                        	["url"] = url,
+                        	["content"] = content
+                        });
+            		}
 
-					var transformed = new Newtonsoft.Json.Linq.JObject
-					{
-						["answer"] = (string)body["answer"] ?? string.Empty,
-						["citations"] = mappedCitations
-					};
+            		var transformed = new Newtonsoft.Json.Linq.JObject
+            		{
+                        ["answer"] = (string)body["answer"] ?? string.Empty,
+                        ["citations"] = mappedCitations
+            		};
 
-					return transformed.ToString(Newtonsoft.Json.Formatting.None);
-				}</set-body>
+            		return transformed.ToString(Newtonsoft.Json.Formatting.None);
+            	}</set-body>
                 <set-header name="Content-Type" exists-action="override">
                     <value>application/json</value>
                 </set-header>
