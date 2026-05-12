@@ -5,15 +5,15 @@ content-type: application/json; charset=utf-8
 
 {
     "session_id": "740a651d424b42f3b97801c57a296865",
-    "user_query": "what can you do?"
+    "user_query": "tiger protection"
 }
 
 ### APIM Proxy
 
-POST https://apim-maybank-kb.azure-api.net/api/chat
+POST https://mbb-espi-apim-dev.azure-api.net/api/chat
 content-type: application/json; charset=utf-8
 
 {
-    "session_id": "740a651d424b42f3b97801c57a296865",
-    "user_query": "what can you do?"
+    "conversation_id": "740a651d424b42f3b97801c57a296866",
+    "question": "tiger protection"
 }

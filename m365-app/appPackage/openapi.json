@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://apim-maybank-kb.azure-api.net",
+      "url": "https://mbb-espi-apim-dev.azure-api.net",
       "description": "Azure API Management Gateway"
     }
   ],
